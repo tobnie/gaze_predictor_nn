@@ -1,3 +1,3 @@
-from gaze_predictor_nn.fully_connected import FCNetwork
-from gaze_predictor_nn.convolutional import ConvNetwork
-from gaze_predictor_nn.convolutional_3d import ConvNetwork3D
+from .fully_connected import FCNetwork
+from .convolutional import ConvNetwork
+from .convolutional_3d import ConvNetwork3D
