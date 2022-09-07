@@ -1,1 +1,1 @@
-include data/*.npz
+include gaze_predictor/gaze_predictor/data/*.npz

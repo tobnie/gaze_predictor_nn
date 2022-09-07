@@ -5,6 +5,7 @@ setup(name='gaze_predictor',
       description='Gaze Predictor Neural Network',
       author='Tobias Niehues',
       author_email='niehues.tobias@gmail.com',
+      package_dir={"": "gaze_predictor"},
       packages=find_packages(),
       include_package_data=True
 )
