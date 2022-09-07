@@ -1,3 +1,3 @@
-from .fully_connected import FCNetwork
-from .convolutional import ConvNetwork
-from .convolutional_3d import ConvNetwork3D
+from . import fully_connected
+from . import convolutional
+from . import convolutional_3d
