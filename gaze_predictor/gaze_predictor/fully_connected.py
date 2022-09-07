@@ -39,7 +39,7 @@ class FCNetwork(NeuralNetwork):
             keras.layers.Dense(self.config['n_output'], name='Output')
         ])
 
-        print(f'Created model for {self.__name__}:')
+        print(f'Created model for {self.name}:')
         print(self.model.summary())
 
 
