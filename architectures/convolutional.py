@@ -1,4 +1,4 @@
-from neural_network.architectures.base_network import NeuralNetwork
+from architectures.base_network import NeuralNetwork
 from tensorflow import keras
 
 nn_configuration = {
@@ -14,7 +14,7 @@ nn_configuration = {
 }
 
 
-class ConvNetwork3D(NeuralNetwork):
+class ConvNetwork(NeuralNetwork):
 
     def __init__(self, name, percent_train=0.8, configuration=None):
         X_path = '../data/input.npz'
