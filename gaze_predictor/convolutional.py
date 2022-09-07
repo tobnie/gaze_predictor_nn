@@ -1,4 +1,4 @@
-from gaze_predictor_nn.base_network import NeuralNetwork
+from gaze_predictor.base_network import NeuralNetwork
 from tensorflow import keras
 
 nn_configuration = {

@@ -1,7 +1,5 @@
-from matplotlib import pyplot as plt
 from tensorflow import keras
-
-from neural_network.architectures.base_network import NeuralNetwork
+from gaze_predictor.base_network import NeuralNetwork
 
 nn_configuration = {
     'epochs': 50,  # number of epochs
