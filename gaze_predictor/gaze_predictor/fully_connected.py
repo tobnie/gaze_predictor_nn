@@ -3,6 +3,7 @@ import importlib.resources
 from tensorflow import keras
 
 from gaze_predictor.gaze_predictor.base_network import NeuralNetwork
+from gaze_predictor.gaze_predictor.data
 
 nn_configuration = {
     'epochs': 50,  # number of epochs
@@ -26,8 +27,8 @@ class FCNetwork(NeuralNetwork):
         y_path = 'data/output.npz'
 
         super().__init__(name, percent_train, configuration)
-        with importlib.resources.path('gaze_predictor', y_path) as data_path_X:
-            with importlib.resources.path('gaze_predictor', X_path) as data_path_y:
+        with importlib.resources.path('gaze_predictor.gaze_predictor.data', y_path) as data_path_X:
+            with importlib.resources.path('gaze_predictor.gaze_predictor.data', X_path) as data_path_y:
                 self._load_data(data_path_X, data_path_y, flatten=True)
 
     def create_model(self):
