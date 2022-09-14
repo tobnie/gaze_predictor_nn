@@ -29,11 +29,15 @@ class FCNetwork(NeuralNetwork):
                 self._load_data(data_path_X, data_path_y, flatten=True)
 
     def create_model(self):
+        xavier_initializer = keras.initializers.GlorotUniform()
         self.model = keras.Sequential([
-            keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input'),
-            keras.layers.Dense(128, name='Hidden1', activation='relu'),
-            keras.layers.Dense(32, name='Hidden2', activation='relu'),
-            keras.layers.Dense(self.config['n_output'], name='Output')
+            keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input',
+                               kernel_initializer=xavier_initializer),
+            keras.layers.Dense(128, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dropout(name='DropOut1'),
+            keras.layers.Dense(64, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dropout(name='DropOut2'),
+            keras.layers.Dense(self.config['n_output'], name='Output', kernel_initializer=xavier_initializer)
         ])
 
         print(f'Created model for {self.name}:')
