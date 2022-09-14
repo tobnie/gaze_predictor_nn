@@ -29,11 +29,12 @@ class ConvNetwork(NeuralNetwork):
 
     def create_model(self):
         self.model = keras.Sequential([
-            keras.layers.Conv2D(input_shape=self.config['input_shape'], filters=8, kernel_size=3,
-                                strides=2, padding='same', activation='relu', name='Input_Conv'),
+            keras.layers.Conv2D(input_shape=self.config['input_shape'], filters=12, kernel_size=3,
+                                strides=1, padding='same', activation='relu', name='Input_Conv'),
+            keras.layers.MaxPooling2D(pool_size=2, strides=None, padding="valid"),
             keras.layers.Flatten(),
-            keras.layers.Dense(16, name='Hidden1', activation='relu'),
-            keras.layers.Dense(self.config['n_output'], name='Output')
+            keras.layers.Dense(40, name='Dense1', activation='relu'),
+            keras.layers.Dense(self.config['n_output'], name='Dense2_Out')
         ])
 
         print(f'Created model for {self.name}:')

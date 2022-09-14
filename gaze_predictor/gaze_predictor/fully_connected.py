@@ -32,7 +32,7 @@ class FCNetwork(NeuralNetwork):
         self.model = keras.Sequential([
             keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input'),
             keras.layers.Dense(128, name='Hidden1', activation='relu'),
-            keras.layers.Dense(16, name='Hidden2', activation='relu'),
+            keras.layers.Dense(32, name='Hidden2', activation='relu'),
             keras.layers.Dense(self.config['n_output'], name='Output')
         ])
 
