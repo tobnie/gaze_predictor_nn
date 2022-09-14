@@ -84,7 +84,8 @@ class NeuralNetwork:
 
     def save_model(self):
         self.model.save(self.name + '.model')  # self.save_path_model)
-        pickle.dump(self.history.history, self.name + '.history')
+        with open(self.name + '.history', "wb") as f:
+            pickle.dump(self.history.history, f)
 
     def _plot_loss(self):
         plt.plot(self.history.history['loss'])
