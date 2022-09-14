@@ -20,7 +20,7 @@ class ConvNetwork(NeuralNetwork):
 
     def __init__(self, name, percent_train=0.8, configuration=None):
         input_file = 'single_layer_fm.npz'
-        output_file = 'data/mfd.npz'
+        output_file = 'mfd.npz'
 
         super().__init__(name, percent_train, configuration)
         with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
