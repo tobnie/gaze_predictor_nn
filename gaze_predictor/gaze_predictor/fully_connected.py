@@ -34,9 +34,9 @@ class FCNetwork(NeuralNetwork):
             keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input',
                                kernel_initializer=xavier_initializer),
             keras.layers.Dense(128, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
-            keras.layers.Dropout(name='DropOut1', rate=0.6),
+            keras.layers.Dropout(name='DropOut1', rate=0.2),
             keras.layers.Dense(32, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
-            keras.layers.Dropout(name='DropOut2', rate=0.6),
+            keras.layers.Dropout(name='DropOut2', rate=0.2),
             keras.layers.Dense(self.config['n_output'], name='Output', kernel_initializer=xavier_initializer)
         ])
 
