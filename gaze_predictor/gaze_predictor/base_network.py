@@ -62,7 +62,7 @@ class NeuralNetwork:
     def evaluate(self):
         test_loss, test_acc = self.model.evaluate(self.X_test, self.y_test)
 
-        print('\nTest {}}: {}'.format(self.config['metrics'][0], test_acc))
+        print('\nTest {}: {}'.format(self.config['metrics'][0], test_acc))
         print('\nTest loss: {}'.format(test_loss))
 
         self._plot_rmse()
