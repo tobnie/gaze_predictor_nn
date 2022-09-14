@@ -83,9 +83,8 @@ class NeuralNetwork:
         self.history = pickle.load(self.save_path_history)
 
     def save_model(self):
-        self.model.save(self.save_path_model)
-        with open(self.save_path_history, 'wb') as file_pi:
-            pickle.dump(self.history.history, file_pi)
+        self.model.save(self.name + '.model')  # self.save_path_model)
+        pickle.dump(self.history.history, self.name + '.history')
 
     def _plot_loss(self):
         plt.plot(self.history.history['loss'])
@@ -94,7 +93,8 @@ class NeuralNetwork:
         plt.ylabel('loss')
         plt.xlabel('epoch')
         plt.legend(['train', 'val'], loc='upper left')
-        plt.savefig(self.SAVE_DIR + 'plots/' + self.name + '_loss.png')
+        # plt.savefig(self.SAVE_DIR + 'plots/' + self.name + '_loss.png')
+        plt.savefig(self.name + '_loss.png')
         plt.show()
 
     def _plot_rmse(self):
@@ -105,5 +105,6 @@ class NeuralNetwork:
         plt.ylabel(metric_name)
         plt.xlabel('epoch')
         plt.legend(['train', 'val'], loc='upper left')
-        plt.savefig(self.SAVE_DIR + 'plots/' + self.name + '_rmse.png')
+        # plt.savefig(self.SAVE_DIR + 'plots/' + self.name + '_rmse.png')
+        plt.savefig(self.name + '_rmse.png')
         plt.show()
