@@ -1,9 +1,10 @@
+import importlib.resources
 from tensorflow import keras
-
 from gaze_predictor.gaze_predictor.base_network import NeuralNetwork
+import gaze_predictor.gaze_predictor.data
 
 nn_configuration = {
-    'epochs': 50,  # number of epochs
+    'epochs': 20,  # number of epochs
     'batch_size': 32,  # size of the batch
     'verbose': 1,  # set the training phase as verbose
     'optimizer': keras.optimizers.Adam(clipvalue=1.0),  # optimizer
@@ -17,11 +18,17 @@ nn_configuration = {
 
 class ConvNetwork3D(NeuralNetwork):
 
-    def __init__(self, name, percent_train=0.8, configuration=None):
-        X_path = 'data/input_deep_fm.npz'
-        y_path = 'data/output.npz'
+    def __init__(self, name, percent_train=0.8, configuration=None, use_continuous_output=False):
+        input_file = 'multi_layer_fm.npz'
+        if use_continuous_output:
+            output_file = 'data/output_continuous.npz'
+        else:
+            output_file = 'data/output_discrete.npz'
+
         super().__init__(name, percent_train, configuration)
-        self._load_data(X_path, y_path)
+        with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
+            with importlib.resources.path(gaze_predictor.gaze_predictor.data, output_file) as data_path_y:
+                self._load_data(data_path_X, data_path_y)
 
     def create_model(self):
         self.model = keras.Sequential([
@@ -29,7 +36,7 @@ class ConvNetwork3D(NeuralNetwork):
                                 strides=1, padding='same', activation='relu', name='Conv1_In'),
             keras.layers.MaxPooling2D(pool_size=2, strides=None, padding="valid"),
             keras.layers.Flatten(),
-            keras.layers.Dense(20, name='Dense1'),  # TODO activation='relu'),
+            keras.layers.Dense(20, name='Dense1', activation='relu'),
             keras.layers.Dense(2, name='Dense2_Out')
         ])
 
