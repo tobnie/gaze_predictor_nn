@@ -56,14 +56,11 @@ class RBFNetwork(NeuralNetwork):
                 self._load_data(data_path_X, data_path_y, flatten=True)
 
     def create_model(self):
-        # normalization of data
-        norm_layer_y = keras.layers.experimental.preprocessing.Normalization()
-
         xavier_initializer = keras.initializers.GlorotUniform()
         self.model = keras.Sequential([
             keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input',
                                kernel_initializer=xavier_initializer),
-            RBFLayer(265, 0.5, name='rbf_layer'),
+            RBFLayer(32, 0.5, name='rbf_layer'),
             keras.layers.Dense(self.config['n_output'], name='Output', kernel_initializer=xavier_initializer)
         ])
 
