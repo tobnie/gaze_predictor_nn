@@ -13,18 +13,15 @@ nn_configuration = {
     'val_split': 0.2,  # validation split: percentage of the training data used for evaluating the loss function
     'n_input': 300,
     'input_shape': (300,),
-    'n_output': 2  # number of outputs = x and y
+    'n_output': 1  # number of outputs = x and y
 }
 
 
 class FCNetwork(NeuralNetwork):
 
-    def __init__(self, name, percent_train=0.8, configuration=None, use_continuous_output=False):
+    def __init__(self, name, percent_train=0.8, configuration=None):
         input_file = 'single_layer_fm.npz'
-        if use_continuous_output:
-            output_file = 'data/output_continuous.npz'
-        else:
-            output_file = 'data/output_discrete.npz'
+        output_file = 'data/mfd.npz'
 
         super().__init__(name, percent_train, configuration)
         with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:

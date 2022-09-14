@@ -12,18 +12,15 @@ nn_configuration = {
     'loss': 'mean_squared_error',  # loss
     'val_split': 0.2,  # validation split: percentage of the training data used for evaluating the loss function
     'input_shape': (15, 20, 1),
-    'n_output': 2  # number of outputs = x and y
+    'n_output': 1  # number of outputs = x and y
 }
 
 
 class ConvNetwork(NeuralNetwork):
 
-    def __init__(self, name, percent_train=0.8, configuration=None, use_continuous_output=False):
+    def __init__(self, name, percent_train=0.8, configuration=None):
         input_file = 'single_layer_fm.npz'
-        if use_continuous_output:
-            output_file = 'data/output_continuous.npz'
-        else:
-            output_file = 'data/output_discrete.npz'
+        output_file = 'data/mfd.npz'
 
         super().__init__(name, percent_train, configuration)
         with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
@@ -36,7 +33,7 @@ class ConvNetwork(NeuralNetwork):
                                 strides=2, padding='same', activation='relu', name='Input_Conv'),
             keras.layers.Flatten(),
             keras.layers.Dense(16, name='Hidden1', activation='relu'),
-            keras.layers.Dense(2, name='Output')
+            keras.layers.Dense(self.config['n_output'], name='Output')
         ])
 
         print(f'Created model for {self.name}:')
