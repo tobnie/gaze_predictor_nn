@@ -42,6 +42,31 @@ class FCNetwork(NeuralNetwork):
         print(self.model.summary())
 
 
+class FCNetworkELU(NeuralNetwork):
+
+    def __init__(self, name, percent_train=0.8, configuration=None):
+        input_file = 'single_layer_fm.npz'
+        output_file = 'mfd.npz'
+
+        super().__init__(name, percent_train, configuration)
+        with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
+            with importlib.resources.path(gaze_predictor.gaze_predictor.data, output_file) as data_path_y:
+                self._load_data(data_path_X, data_path_y, flatten=True)
+
+    def create_model(self):
+        xavier_initializer = keras.initializers.GlorotUniform()
+        self.model = keras.Sequential([
+            keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input',
+                               kernel_initializer=xavier_initializer),
+            keras.layers.Dense(256, name='Hidden1', activation='elu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(16, name='Hidden2', activation='elu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(self.config['n_output'], name='Output', kernel_initializer=xavier_initializer)
+        ])
+
+        print(f'Created model for {self.name}:')
+        print(self.model.summary())
+
+
 class FCNetworkDropout(NeuralNetwork):
 
     def __init__(self, name, percent_train=0.8, configuration=None):
