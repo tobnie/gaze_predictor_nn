@@ -27,13 +27,21 @@ class RecurrentNetwork(NeuralNetwork):
         super().__init__(name, percent_train, configuration)
         with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
             with importlib.resources.path(gaze_predictor.gaze_predictor.data, output_file) as data_path_y:
-                self._load_data(data_path_X, data_path_y, flatten=True)
+                self._load_data(data_path_X, data_path_y)
+
+        # flatten data
+        n = self.X.shape[0]
+        time_steps = self.X.shape[1]
+        self.X_train = self.X_train.reshape((n, time_steps, -1))
+        self.X_test = self.X_test.reshape((n, time_steps, -1))
+        print('X_train shape:', self.X_train.shape)
+        print('X_test shape:', self.X_test.shape)
 
     # TODO Recurrent Conv1D LSTM natively supported as layer in keras
     def create_model(self):
         xavier_initializer = keras.initializers.GlorotUniform()
         self.model = keras.Sequential([
-            keras.layers.LSTM(64, input_shape=(self.config['time_steps'], self.config['n_input']), name='input',
+            keras.layers.LSTM(64, input_shape=(self.X.shape[1], self.config['n_input']), name='input',
                               kernel_initializer=xavier_initializer),
             keras.layers.Dense(32, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dense(self.config['n_output'], name='output', kernel_initializer=xavier_initializer)
