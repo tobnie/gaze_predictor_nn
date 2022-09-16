@@ -32,10 +32,9 @@ class RecurrentNetwork(NeuralNetwork):
         # flatten data
         print('Train Data before:', self.X_train.shape)
         print('Test Data before:', self.X_test.shape)
-        n = self.X.shape[0]
         time_steps = self.X.shape[1]
-        self.X_train = self.X_train.reshape((n, time_steps, -1))
-        self.X_test = self.X_test.reshape((n, time_steps, -1))
+        self.X_train = self.X_train.reshape((self.X_train.shape[0], time_steps, -1))
+        self.X_test = self.X_test.reshape((self.X_test.shape[0], time_steps, -1))
         print('X_train shape:', self.X_train.shape)
         print('X_test shape:', self.X_test.shape)
 
