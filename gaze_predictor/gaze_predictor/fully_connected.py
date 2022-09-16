@@ -19,14 +19,20 @@ nn_configuration = {
 
 class FCNetwork(NeuralNetwork):
 
-    def __init__(self, name, percent_train=0.8, configuration=None):
+    def __init__(self, name, percent_train=0.8, configuration=None, subject_specific=False):
         input_file = 'single_layer_fm.npz'
         output_file = 'mfd.npz'
 
         super().__init__(name, percent_train, configuration)
-        with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
-            with importlib.resources.path(gaze_predictor.gaze_predictor.data, output_file) as data_path_y:
-                self._load_data(data_path_X, data_path_y, flatten=True)
+
+        if subject_specific:
+            with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
+                with importlib.resources.path(gaze_predictor.gaze_predictor.data, output_file) as data_path_y:
+                    self._load_data(data_path_X, data_path_y, flatten=True)
+        else:
+            with importlib.resources.path(gaze_predictor.gaze_predictor.data.ED06RA, input_file) as data_path_X:
+                with importlib.resources.path(gaze_predictor.gaze_predictor.data.ED06RA, output_file) as data_path_y:
+                    self._load_data(data_path_X, data_path_y, flatten=True)
 
     def create_model(self):
         xavier_initializer = keras.initializers.GlorotUniform()
