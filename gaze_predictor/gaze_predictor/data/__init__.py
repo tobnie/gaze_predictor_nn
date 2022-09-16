@@ -1,1 +1,1 @@
-from ED06RA import *
+from . import *
