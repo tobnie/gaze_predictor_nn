@@ -21,8 +21,8 @@ nn_configuration = {
 class RecurrentNetwork(NeuralNetwork):
 
     def __init__(self, name, percent_train=0.8, configuration=None):
-        input_file = 'single_layer_fm_sequence.npz'
-        output_file = 'mfd.npz'
+        input_file = 'single_layer_fm_seq.npz'
+        output_file = 'mfd_seq.npz'
 
         super().__init__(name, percent_train, configuration)
         with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
@@ -35,7 +35,7 @@ class RecurrentNetwork(NeuralNetwork):
         self.model = keras.Sequential([
             keras.layers.LSTM(64, input_shape=(self.config['time_steps'], self.config['n_input']), name='input',
                               kernel_initializer=xavier_initializer),
-            keras.layers.Dense(16, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(32, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dense(self.config['n_output'], name='output', kernel_initializer=xavier_initializer)
         ])
 
