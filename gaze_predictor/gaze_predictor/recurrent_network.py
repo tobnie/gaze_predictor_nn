@@ -14,7 +14,7 @@ nn_configuration = {
     'time_steps': 5,
     'n_input': 300,
     'input_shape': (300,),
-    'n_output': 1  # number of outputs = x and y
+    'n_output': 1  # number of outputs = mfd
 }
 
 
@@ -38,7 +38,6 @@ class RecurrentNetwork(NeuralNetwork):
         print('X_train shape:', self.X_train.shape)
         print('X_test shape:', self.X_test.shape)
 
-    # TODO Recurrent Conv1D LSTM natively supported as layer in keras
     def create_model(self):
         xavier_initializer = keras.initializers.GlorotUniform()
         self.model = keras.Sequential([
