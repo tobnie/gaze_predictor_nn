@@ -30,6 +30,7 @@ class NeuralNetwork:
     def _load_subject_data_and_concat(self, input_file, output_file, subject_specific):
         working_directory = os.getcwd()
         data_dir = os.path.join(working_directory, DATA_PATH)
+        print(data_dir)
         subject_dirs = [f for f in os.listdir(data_dir) if os.path.isdir(f)]
         print('Subject dirs:', subject_dirs)
 
