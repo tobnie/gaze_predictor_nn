@@ -26,7 +26,6 @@ class FCNetwork(NeuralNetwork):
 
         super().__init__(name, percent_train, configuration)
 
-        # TODO subject specific
         self._load_data(input_file, output_file, flatten=True, subject_specific=subject_specific)
 
     def create_model(self):

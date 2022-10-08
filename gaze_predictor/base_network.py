@@ -6,7 +6,7 @@ from sklearn.utils import shuffle
 from tensorflow import keras
 import pickle
 
-DATA_PATH = './gaze_predictor/data/'
+DATA_PATH = '/gaze_predictor/data/'
 
 class NeuralNetwork:
     SAVE_DIR = '../saved_models/'
@@ -28,7 +28,9 @@ class NeuralNetwork:
 
 
     def _load_subject_data_and_concat(self, input_file, output_file, subject_specific):
-        subject_dirs = [f for f in os.listdir(DATA_PATH) if os.path.isdir(f)]
+        working_directory = os.getcwd()
+        data_dir = os.path.join(working_directory, DATA_PATH)
+        subject_dirs = [f for f in os.listdir(data_dir) if os.path.isdir(f)]
         print('Subject dirs:', subject_dirs)
 
         print(f'Current working directory: {os.getcwd()}')
