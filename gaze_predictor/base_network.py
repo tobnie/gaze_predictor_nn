@@ -28,12 +28,8 @@ class NeuralNetwork:
         self.model = None
 
     def _load_subject_data_and_concat(self, input_file, output_file, subject_specific):
-        print(f'Current working directory: {os.getcwd()}')
         data_dir = os.getcwd() + DATA_PATH
         subject_dirs = [f for f in os.listdir(data_dir)]
-        print('Subject dirs:', subject_dirs)
-
-        print(f'Current working directory: {os.getcwd()}')
 
         subject_X_list = []
         subject_y_list = []
@@ -41,10 +37,10 @@ class NeuralNetwork:
             input_path = data_dir + subject_dir + '/' + input_file
             output_path = data_dir + subject_dir + '/' + output_file
 
-            print(f'Loading from {input_path}...')
+            # print(f'Loading from {input_path}...')
             subject_X = np.load(input_path)['arr_0']
 
-            print(f'Loading from {output_path}...')
+            # print(f'Loading from {output_path}...')
             subject_y = np.load(output_path)['arr_0']
 
             # if only for one subject, immediately return first found subject data
@@ -56,9 +52,6 @@ class NeuralNetwork:
 
         X = np.concatenate(subject_X_list)
         y = np.concatenate(subject_y_list)
-
-        print(X.shape)
-        print(X)
 
         return X, y
 
