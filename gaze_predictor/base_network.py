@@ -42,10 +42,10 @@ class NeuralNetwork:
             output_path = data_dir + subject_dir + '/' + output_file
 
             print(f'Loading from {input_path}...')
-            subject_X = np.load(input_path)
+            subject_X = np.load(input_path)['arr_0']
 
             print(f'Loading from {output_path}...')
-            subject_y = np.load(output_path)
+            subject_y = np.load(output_path)['arr_0']
 
             # if only for one subject, immediately return first found subject data
             if subject_specific:
