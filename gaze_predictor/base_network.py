@@ -31,13 +31,18 @@ class NeuralNetwork:
         subject_dirs = [f for f in os.listdir(DATA_PATH) if os.path.isdir(f)]
         print('Subject dirs:', subject_dirs)
 
+        print(f'Current working directory: {os.getcwd()}')
+
         subject_X_list = []
         subject_y_list = []
         for subject_dir in subject_dirs:
             input_path = os.path.join(subject_dir, input_file)
             output_path = os.path.join(subject_dir, output_file)
 
+            print(f'Loading from {input_path}...')
             subject_X = np.load(input_path)
+
+            print(f'Loading from {output_path}...')
             subject_y = np.load(output_path)
 
             # if only for one subject, immediately return first found subject data
