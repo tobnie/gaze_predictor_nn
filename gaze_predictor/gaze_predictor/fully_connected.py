@@ -35,15 +35,15 @@ class FCNetwork(NeuralNetwork):
                 with importlib.resources.path(gaze_predictor.gaze_predictor.data, output_file) as data_path_y:
                     self._load_data(data_path_X, data_path_y, flatten=True)
 
-
+        print(self.X.shape)
 
     def create_model(self):
         xavier_initializer = keras.initializers.GlorotUniform()
         self.model = keras.Sequential([
             keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input',
                                kernel_initializer=xavier_initializer),
-            keras.layers.Dense(256, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
-            keras.layers.Dense(16, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(512, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(32, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dense(self.config['n_output'], name='Output', kernel_initializer=xavier_initializer)
         ])
 
@@ -67,8 +67,8 @@ class FCNetworkELU(NeuralNetwork):
         self.model = keras.Sequential([
             keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input',
                                kernel_initializer=xavier_initializer),
-            keras.layers.Dense(256, name='Hidden1', activation='elu', kernel_initializer=xavier_initializer),
-            keras.layers.Dense(16, name='Hidden2', activation='elu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(512, name='Hidden1', activation='elu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(32, name='Hidden2', activation='elu', kernel_initializer=xavier_initializer),
             keras.layers.Dense(self.config['n_output'], name='Output', kernel_initializer=xavier_initializer)
         ])
 
@@ -92,9 +92,9 @@ class FCNetworkDropout(NeuralNetwork):
         self.model = keras.Sequential([
             keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input',
                                kernel_initializer=xavier_initializer),
-            keras.layers.Dense(256, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(512, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dropout(name='DropOut1', rate=0.2),
-            keras.layers.Dense(16, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(32, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dropout(name='DropOut2', rate=0.2),
             keras.layers.Dense(self.config['n_output'], name='Output', kernel_initializer=xavier_initializer)
         ])
@@ -119,9 +119,9 @@ class FCNetworkBatchNormalization(NeuralNetwork):
         self.model = keras.Sequential([
             keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input',
                                kernel_initializer=xavier_initializer),
-            keras.layers.Dense(256, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(512, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.BatchNormalization(),
-            keras.layers.Dense(16, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(32, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.BatchNormalization(),
             keras.layers.Dense(self.config['n_output'], name='Output', kernel_initializer=xavier_initializer)
         ])
