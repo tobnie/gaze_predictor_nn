@@ -26,14 +26,8 @@ class FCNetwork(NeuralNetwork):
 
         super().__init__(name, percent_train, configuration)
 
-        if subject_specific:
-            with importlib.resources.path(gaze_predictor.gaze_predictor.data) as data_path_X:
-                with importlib.resources.path(gaze_predictor.gaze_predictor.data) as data_path_y:
-                    self._load_data(data_path_X, data_path_y, flatten=True)
-        else:
-            with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
-                with importlib.resources.path(gaze_predictor.gaze_predictor.data, output_file) as data_path_y:
-                    self._load_data(data_path_X, data_path_y, flatten=True)
+        # TODO subject specific
+        self._load_data(input_file, output_file, flatten=True, subject_specific=subject_specific)
 
     def create_model(self):
         print('X shape:', self.X.shape)

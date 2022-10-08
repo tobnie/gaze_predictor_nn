@@ -6,10 +6,7 @@ from sklearn.utils import shuffle
 from tensorflow import keras
 import pickle
 
-ALL_SUBJECT_DATA_MODULES = [
-
-]
-
+DATA_PATH = '/content/gaze_predictor_nn/gaze_predictor/data/'
 
 class NeuralNetwork:
     SAVE_DIR = '../saved_models/'
@@ -30,8 +27,8 @@ class NeuralNetwork:
         self.model = None
 
 
-    def _load_subject_data_and_concat(self, dir_path, input_file, output_file):
-        subject_dirs = [f for f in os.listdir(dir_path) if os.path.isdir(f)]
+    def _load_subject_data_and_concat(self, input_file, output_file, subject_specific):
+        subject_dirs = [f for f in os.listdir(DATA_PATH) if os.path.isdir(f)]
         print('Subject dirs:', subject_dirs)
 
         subject_X_list = []
@@ -43,6 +40,10 @@ class NeuralNetwork:
             subject_X = np.load(input_path)
             subject_y = np.load(output_path)
 
+            # if only for one subject, immediately return first found subject data
+            if subject_specific:
+                return subject_X, subject_y
+
             subject_X_list.append(subject_X)
             subject_y_list.append(subject_y)
 
@@ -51,9 +52,9 @@ class NeuralNetwork:
 
         return X, y
 
-    def _load_data(self, dir_path, input_file, output_file, flatten=False):
+    def _load_data(self, input_file, output_file, flatten=False, subject_specific=False):
 
-        X, y = self._load_subject_data_and_concat(dir_path, input_file, output_file)
+        X, y = self._load_subject_data_and_concat(input_file, output_file, subject_specific=subject_specific)
 
         if flatten:
             n = X.shape[0]
