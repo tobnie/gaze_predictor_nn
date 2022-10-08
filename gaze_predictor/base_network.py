@@ -6,7 +6,7 @@ from sklearn.utils import shuffle
 from tensorflow import keras
 import pickle
 
-DATA_PATH = '/content/gaze_predictor_nn/gaze_predictor/data/'
+DATA_PATH = './gaze_predictor/data/'
 
 class NeuralNetwork:
     SAVE_DIR = '../saved_models/'
