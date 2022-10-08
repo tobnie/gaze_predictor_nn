@@ -27,13 +27,15 @@ class FCNetwork(NeuralNetwork):
         super().__init__(name, percent_train, configuration)
 
         if subject_specific:
-            with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
-                with importlib.resources.path(gaze_predictor.gaze_predictor.data, output_file) as data_path_y:
-                    self._load_data(data_path_X, data_path_y, flatten=True)
-        else:
             with importlib.resources.path(gaze_predictor.gaze_predictor.data.ED06RA, input_file) as data_path_X:
                 with importlib.resources.path(gaze_predictor.gaze_predictor.data.ED06RA, output_file) as data_path_y:
                     self._load_data(data_path_X, data_path_y, flatten=True)
+        else:
+            with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
+                with importlib.resources.path(gaze_predictor.gaze_predictor.data, output_file) as data_path_y:
+                    self._load_data(data_path_X, data_path_y, flatten=True)
+
+
 
     def create_model(self):
         xavier_initializer = keras.initializers.GlorotUniform()

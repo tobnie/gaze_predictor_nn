@@ -24,6 +24,9 @@ class NeuralNetwork:
         self.model = None
 
     def _load_data(self, input_path, output_path, flatten=False):
+
+        # TODO load per subject
+
         data = np.load(input_path)
         X = data['arr_0']
 
