@@ -38,8 +38,8 @@ class NeuralNetwork:
         subject_X_list = []
         subject_y_list = []
         for subject_dir in subject_dirs:
-            input_path = subject_dir + '/' + input_file
-            output_path = subject_dir + '/' + output_file
+            input_path = data_dir + subject_dir + '/' + input_file
+            output_path = data_dir + subject_dir + '/' + output_file
 
             print(f'Loading from {input_path}...')
             subject_X = np.load(input_path)
