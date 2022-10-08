@@ -37,6 +37,8 @@ class FCNetwork(NeuralNetwork):
 
 
     def create_model(self):
+        print('X shape:', self.X.shape)
+
         xavier_initializer = keras.initializers.GlorotUniform()
         self.model = keras.Sequential([
             keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input',

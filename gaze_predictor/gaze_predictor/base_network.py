@@ -30,8 +30,6 @@ class NeuralNetwork:
         data = np.load(input_path)
         X = data['arr_0']
 
-        print('X shape:', X.shape)
-
         data = np.load(output_path)
         y = data['arr_0']
 
