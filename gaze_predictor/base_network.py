@@ -54,8 +54,8 @@ class NeuralNetwork:
             subject_X_list.append(subject_X)
             subject_y_list.append(subject_y)
 
-        X = np.array(subject_X_list)
-        y = np.array(subject_y_list)
+        X = np.concatenate(subject_X_list)
+        y = np.concatenate(subject_y_list)
 
         print(X.shape)
         print(X)
