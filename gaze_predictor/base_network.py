@@ -8,6 +8,7 @@ import pickle
 
 DATA_PATH = '/gaze_predictor/data/'
 
+
 class NeuralNetwork:
     SAVE_DIR = '../saved_models/'
 
@@ -26,14 +27,10 @@ class NeuralNetwork:
         self.history = None
         self.model = None
 
-
     def _load_subject_data_and_concat(self, input_file, output_file, subject_specific):
         print(f'Current working directory: {os.getcwd()}')
-        working_directory = os.getcwd()
-        print('String join:', working_directory + DATA_PATH)
-        data_dir = working_directory + DATA_PATH
-        print(data_dir)
-        subject_dirs = [f for f in os.listdir(data_dir) if os.path.isdir(f)]
+        data_dir = os.getcwd() + DATA_PATH
+        subject_dirs = [f for f in os.listdir(data_dir)]
         print('Subject dirs:', subject_dirs)
 
         print(f'Current working directory: {os.getcwd()}')
@@ -41,8 +38,8 @@ class NeuralNetwork:
         subject_X_list = []
         subject_y_list = []
         for subject_dir in subject_dirs:
-            input_path = os.path.join(subject_dir, input_file)
-            output_path = os.path.join(subject_dir, output_file)
+            input_path = subject_dir + '/' + input_file
+            output_path = subject_dir + '/' + output_file
 
             print(f'Loading from {input_path}...')
             subject_X = np.load(input_path)
