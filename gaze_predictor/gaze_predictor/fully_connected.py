@@ -35,7 +35,6 @@ class FCNetwork(NeuralNetwork):
                 with importlib.resources.path(gaze_predictor.gaze_predictor.data, output_file) as data_path_y:
                     self._load_data(data_path_X, data_path_y, flatten=True)
 
-        print(self.X.shape)
 
     def create_model(self):
         xavier_initializer = keras.initializers.GlorotUniform()
