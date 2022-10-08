@@ -1,10 +1,10 @@
 import os
+import pickle
 
 import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.utils import shuffle
 from tensorflow import keras
-import pickle
 
 DATA_PATH = '/gaze_predictor/data/'
 

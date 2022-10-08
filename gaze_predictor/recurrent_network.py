@@ -20,14 +20,12 @@ nn_configuration = {
 
 class RecurrentNetwork(NeuralNetwork):
 
-    def __init__(self, name, percent_train=0.8, configuration=None):
+    def __init__(self, name, percent_train=0.8, configuration=None, subject_specific=False):
         input_file = 'single_layer_fm_seq.npz'
         output_file = 'mfd_seq.npz'
 
         super().__init__(name, percent_train, configuration)
-        with importlib.resources.path(gaze_predictor.gaze_predictor.data, input_file) as data_path_X:
-            with importlib.resources.path(gaze_predictor.gaze_predictor.data, output_file) as data_path_y:
-                self._load_data(data_path_X, data_path_y)
+        self._load_data(input_file, output_file, flatten=True, subject_specific=subject_specific)
 
         # flatten data
         print('Train Data before:', self.X_train.shape)
