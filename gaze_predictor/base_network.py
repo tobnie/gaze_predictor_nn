@@ -57,6 +57,9 @@ class NeuralNetwork:
         X = np.array(subject_X_list)
         y = np.array(subject_y_list)
 
+        print(X.shape)
+        print(X)
+
         return X, y
 
     def _load_data(self, input_file, output_file, flatten=False, subject_specific=False):
