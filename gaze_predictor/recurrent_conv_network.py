@@ -1,7 +1,6 @@
-import importlib.resources
 from tensorflow import keras
+
 from gaze_predictor.base_network import NeuralNetwork
-import gaze_predictor.data
 
 nn_configuration = {
     'epochs': 20,  # number of epochs
