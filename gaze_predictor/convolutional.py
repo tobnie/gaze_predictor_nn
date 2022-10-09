@@ -22,7 +22,7 @@ class ConvNetwork(NeuralNetwork):
         output_file = 'mfd.npz'
 
         super().__init__(name, percent_train, configuration)
-        self._load_data(input_file, output_file, flatten=True, subject_specific=subject_specific)
+        self._load_data(input_file, output_file, flatten=False, subject_specific=subject_specific)
 
     def create_model(self):
         self.model = keras.Sequential([
