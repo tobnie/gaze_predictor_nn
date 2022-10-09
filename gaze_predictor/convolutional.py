@@ -33,8 +33,8 @@ class ConvNetwork(NeuralNetwork):
             keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'),
             keras.layers.Flatten(),
             keras.layers.Dense(64, name='Dense1', activation='relu'),  # TODO number of nodes
-            keras.layers.Dense(16, name='Dense1', activation='relu'),
-            keras.layers.Dense(self.config['n_output'], name='Dense2_Out')
+            keras.layers.Dense(16, name='Dense2', activation='relu'),
+            keras.layers.Dense(self.config['n_output'], name='Output')
         ])
 
         print(f'Created model for {self.name}:')
