@@ -106,34 +106,30 @@ class MultiInputConvNetwork:
     def create_model(self):
         print('X1 Input Shape: ', self.X1_train.shape[1:])
         print('X2 Input Shape: ', self.X2_train.shape[1:])
-        state_input = keras.layers.Input(shape=self.X1_train.shape[1:])
-        region_input = keras.layers.Input(shape=self.X2_train.shape[1:])
+        state_input = keras.layers.InputLayer(shape=self.X1_train.shape[1:])
+        region_input = keras.layers.InputLayer(shape=self.X2_train.shape[1:])
 
-        branch1 = keras.Sequential()
-        branch1.add(keras.layers.Conv2D(input_shape=self.X1_train.shape[1:], filters=16, kernel_size=5,
-                                        strides=1, padding='same', activation='relu', name='Conv1')(state_input))
-        branch1.add(keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'))
-        branch1.add(keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2'))
-        branch1.add(keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'))
-        branch1.add(keras.layers.Flatten())
+        # branch1 = keras.Sequential()
+        # branch1.add(keras.layers.Conv2D(input_shape=self.X1_train.shape[1:], filters=16, kernel_size=5,
+        #                                 strides=1, padding='same', activation='relu', name='Conv1')(state_input))
+        # branch1.add(keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'))
+        # branch1.add(keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2'))
+        # branch1.add(keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'))
+        # branch1.add(keras.layers.Flatten())
+        # x1 = branch1(state_input)
 
-        x1 = branch1(state_input)
+
+        x1 = keras.layers.Conv2D(input_shape=self.X1_train.shape[1:], filters=16, kernel_size=5,
+                                 strides=1, padding='same', activation='relu', name='Conv1')(state_input),
+        print('First Layer output:', x1)
+        x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
+        x1 = keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1),
+        x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
+        x1 = keras.layers.Flatten()(x1),
         x = keras.layers.concatenate()([x1, region_input])
         x = keras.layers.Dense(64, name='Dense1', activation='relu')(x),
         x = keras.layers.Dense(16, name='Dense2', activation='relu')(x),
         output = keras.layers.Dense(self.config['n_output'], name='Output')(x)
-
-        # x1 = keras.layers.Conv2D(input_shape=self.X1_train.shape[1:], filters=16, kernel_size=5,
-        #                          strides=1, padding='same', activation='relu', name='Conv1')(state_input),
-        # print('First Layer output:', x1)
-        # x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
-        # x1 = keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1),
-        # x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
-        # x1 = keras.layers.Flatten()(x1),
-        # x = keras.layers.concatenate()([x1, region_input])
-        # x = keras.layers.Dense(64, name='Dense1', activation='relu')(x),
-        # x = keras.layers.Dense(16, name='Dense2', activation='relu')(x),
-        # output = keras.layers.Dense(self.config['n_output'], name='Output')(x)
 
         self.model = Model(inputs=[state_input, region_input], outputs=[output])
         print(f'Created model for {self.name}:')
