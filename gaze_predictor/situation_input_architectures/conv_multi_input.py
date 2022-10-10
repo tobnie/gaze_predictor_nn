@@ -86,7 +86,7 @@ class MultiInputConvNetwork:
         generator = generator_train if train else generator_test
 
         dataset = tf.data.Dataset.from_generator(generator, output_types=({"input_1": tf.int64, "input_2": tf.int64}, tf.float64))
-        # dataset = dataset.batch(2)
+        dataset = dataset.batch(self.config['batch_size'])
         return dataset
 
     def _load_data(self, input_file, output_file, flatten=False, subject_specific=False):
@@ -109,6 +109,7 @@ class MultiInputConvNetwork:
 
         x1 = keras.layers.Conv2D(input_shape=self.config['input_shape'], filters=16, kernel_size=5,
                                  strides=1, padding='same', activation='relu', name='Conv1')(state_input),
+        print('First Layer output:', x1)
         x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
         x1 = keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1),
         x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
