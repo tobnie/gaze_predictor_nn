@@ -31,8 +31,8 @@ class RecurrentConvNetwork(BaseRecurrentNetwork):
         # flatten data
         print('Train Data before:', self.X_train.shape)
         print('Test Data before:', self.X_test.shape)
-        self.X_train = self.X_train.reshape((self.X_train.shape[0], self.timesteps, 15, 20))
-        self.X_test = self.X_test.reshape((self.X_test.shape[0], self.timesteps, 15, 20))
+        self.X_train = self.X_train.reshape((self.X_train.shape[0], self.timesteps, 15, 20, 1))
+        self.X_test = self.X_test.reshape((self.X_test.shape[0], self.timesteps, 15, 20, 1))
         print('X_train after reshape:', self.X_train.shape)
         print('X_test after reshape:', self.X_test.shape)
         # TODO data format:  5D tensor with shape: (samples, time, rows, cols, channels)
@@ -42,21 +42,13 @@ class RecurrentConvNetwork(BaseRecurrentNetwork):
         xavier_initializer = keras.initializers.GlorotUniform()
         self.model = keras.Sequential([
             keras.layers.ConvLSTM2D(filters=32, kernel_size=5, strides=1, padding='same',
-                                    input_shape=(self.X.shape[1], self.config['n_input']), name='LSTMConv',
-                                    kernel_initializer=xavier_initializer),
+                                    input_shape=self.X_train.shape[1:], name='LSTMConv',
+                                    kernel_initializer=xavier_initializer),  # activation is tanh by default
             keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'),
             keras.layers.Conv2D(filters=16, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv'),
             keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'),
             keras.layers.Flatten(),
             keras.layers.Dense(32, name='Dense', activation='relu', kernel_initializer=xavier_initializer),
-            keras.layers.Dense(self.config['n_output'], name='output', kernel_initializer=xavier_initializer)
-        ])
-
-        self.model = keras.Sequential([
-            keras.layers.LSTM(64, input_shape=(self.X_train.shape[-2], self.X_train.shape[-1]), name='input',
-                              kernel_initializer=xavier_initializer),
-            keras.layers.Dense(128, name='Dense1', activation='relu', kernel_initializer=xavier_initializer),
-            keras.layers.Dense(16, name='Dense2', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dense(self.config['n_output'], name='output', kernel_initializer=xavier_initializer)
         ])
 
