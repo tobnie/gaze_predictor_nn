@@ -58,7 +58,7 @@ class RecurrentConvNetwork(BaseRecurrentNetwork):
 class RecurrentConvNetworkSituationInput(BaseRecurrentNetwork):
 
     def __init__(self, name, percent_train=0.8, configuration=None, subject_specific=False, timesteps=100, stride=20):
-        input_file = 'state_7x7.npz'
+        input_file = 'situation_seq_7x7.npz'
         output_file = 'mfd_seq.npz'
 
         super().__init__(name, percent_train, configuration, timesteps=timesteps, stride=stride)
