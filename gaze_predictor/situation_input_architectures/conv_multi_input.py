@@ -106,8 +106,6 @@ class MultiInputConvNetwork:
     def create_model(self):
         print('X1 Input Shape: ', self.X1_train.shape[1:])
         print('X2 Input Shape: ', self.X2_train.shape[1:])
-        state_input = keras.layers.InputLayer(input_shape=self.X1_train.shape[1:])
-        region_input = keras.layers.InputLayer(input_shape=self.X2_train.shape[1:])
 
         # branch1 = keras.Sequential()
         # branch1.add(keras.layers.Conv2D(input_shape=self.X1_train.shape[1:], filters=16, kernel_size=5,
@@ -118,20 +116,22 @@ class MultiInputConvNetwork:
         # branch1.add(keras.layers.Flatten())
         # x1 = branch1(state_input)
 
+        state_input = keras.Input(shape=self.X1_train.shape[1:])
+        position_input = keras.Input(shape=self.X2_train.shape[1:])
 
-        x1 = keras.layers.Conv2D(input_shape=self.X1_train.shape[1:], filters=16, kernel_size=5,
-                                 strides=1, padding='same', activation='relu', name='Conv1')(state_input),
+        x1 = keras.layers.Conv2D(filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='Conv1')(state_input),
         print('First Layer output:', x1)
         x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
         x1 = keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1),
         x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
         x1 = keras.layers.Flatten()(x1),
-        x = keras.layers.concatenate()([x1, region_input])
+
+        x = keras.layers.concatenate()([x1, position_input])
         x = keras.layers.Dense(64, name='Dense1', activation='relu')(x),
         x = keras.layers.Dense(16, name='Dense2', activation='relu')(x),
         output = keras.layers.Dense(self.config['n_output'], name='Output')(x)
 
-        self.model = Model(inputs=[state_input, region_input], outputs=[output])
+        self.model = Model(inputs=[state_input, position_input], outputs=[output])
         print(f'Created model for {self.name}:')
         print(self.model.summary())
 
@@ -143,9 +143,12 @@ class MultiInputConvNetwork:
         self.model.compile(optimizer=self.config['optimizer'],
                            loss=self.config['loss'],
                            metrics=[keras.metrics.RootMeanSquaredError()])
-        self.history = self.model.fit(self._input_fn(train=True), batch_size=self.config['batch_size'], epochs=self.config['epochs'],
+        self.history = self.model.fit([self.X1_train, self.X2_train], batch_size=self.config['batch_size'], epochs=self.config['epochs'],
                                       verbose=self.config['verbose'],
                                       validation_split=self.config['val_split'])
+        # self.history = self.model.fit(self._input_fn(train=True), batch_size=self.config['batch_size'], epochs=self.config['epochs'],
+        #                               verbose=self.config['verbose'],
+        #                               validation_split=self.config['val_split'])
 
     def evaluate(self):
         test_loss, test_acc = self.model.evaluate(self._input_fn(train=False))
