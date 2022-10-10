@@ -31,8 +31,8 @@ class RecurrentConvNetwork(BaseRecurrentNetwork):
         # flatten data
         print('Train Data before:', self.X_train.shape)
         print('Test Data before:', self.X_test.shape)
-        self.X_train = self.X_train.reshape((self.X_train.shape[0], self.timesteps, -1, -1))
-        self.X_test = self.X_test.reshape((self.X_test.shape[0], self.timesteps, -1, -1))
+        self.X_train = self.X_train.reshape((self.X_train.shape[0], self.timesteps, 15, 20))
+        self.X_test = self.X_test.reshape((self.X_test.shape[0], self.timesteps, 15, 20))
         print('X_train after reshape:', self.X_train.shape)
         print('X_test after reshape:', self.X_test.shape)
         # TODO data format:  5D tensor with shape: (samples, time, rows, cols, channels)
