@@ -38,7 +38,8 @@ class MultiInputConvNetwork:
         data_dir = os.getcwd() + DATA_PATH
         subject_dirs = [f for f in os.listdir(data_dir)]
 
-        subject_X_list = []
+        subject_X1_list = []
+        subject_X2_list = []
         subject_y_list = []
         for subject_dir in subject_dirs:
             input_path = data_dir + subject_dir + '/' + input_file
@@ -48,28 +49,25 @@ class MultiInputConvNetwork:
             # print(f'Loading from {input_path}...')
             subject_situation = np.load(input_path)['arr_0']
             subject_player_pos = np.load(player_pos_path)['arr_0']
-            subject_player_pos = subject_player_pos.reshape((subject_player_pos.shape[0], 2))
-            subject_situation = subject_situation.reshape((subject_situation.shape[0], -1))
-
-            print('Situation data shape:', subject_situation.shape)
-            print('player pos data shape:', subject_player_pos.shape)
-            subject_X = np.concatenate((subject_situation, subject_player_pos), axis=1)
-            print('concatenated data shape:', subject_X.shape)
+            subject_X1 = subject_situation.reshape((subject_situation.shape[0], -1))
+            subject_X2 = subject_player_pos.reshape((subject_player_pos.shape[0], 2))
 
             # print(f'Loading from {output_path}...')
             subject_y = np.load(output_path)['arr_0']
 
             # if only for one subject, immediately return first found subject data
             if subject_specific:
-                return subject_X, subject_y
+                return subject_X1, subject_X2, subject_y
 
-            subject_X_list.append(subject_X)
+            subject_X1_list.append(subject_X1)
+            subject_X2_list.append(subject_X2)
             subject_y_list.append(subject_y)
 
-        X = np.concatenate(subject_X_list)
+        X1 = np.concatenate(subject_X1_list)
+        X2 = np.concatenate(subject_X2_list)
         y = np.concatenate(subject_y_list)
 
-        return X, y
+        return X1, X2, y
 
     def _shuffle_data(self, random_state=0):
         self.X1, self.X2, self.y = shuffle(self.X1, self.X2, self.y, random_state=random_state)
