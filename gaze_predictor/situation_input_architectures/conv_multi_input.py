@@ -122,7 +122,7 @@ class MultiInputConvNetwork:
 
         x1 = keras.layers.Conv2D(filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='Conv1')(state_input),
         print('First Layer output:', x1)
-        x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
+        # x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
         x1 = keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1),
         x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
         x1 = keras.layers.Flatten()(x1),
@@ -130,7 +130,7 @@ class MultiInputConvNetwork:
         x = keras.layers.concatenate()([x1, position_input])
         x = keras.layers.Dense(64, name='Dense1', activation='relu')(x),
         x = keras.layers.Dense(16, name='Dense2', activation='relu')(x),
-        output = keras.layers.Dense(self.config['n_output'], name='Output')(x)
+        output = keras.layers.Dense(1, name='Output')(x)
 
         self.model = Model(inputs=[state_input, position_input], outputs=output)
         print(f'Created model for {self.name}:')
