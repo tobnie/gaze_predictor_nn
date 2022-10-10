@@ -33,7 +33,7 @@ class MultiInputConvNetwork:
         self._load_data(input_file, output_file, flatten=False, subject_specific=subject_specific)
 
     def _load_subject_data_and_concat(self, input_file, output_file, subject_specific):
-        data_dir = os.getcwd() + DATA_PATH
+        data_dir = '../data/'
         subject_dirs = [f for f in os.listdir(data_dir)]
 
         subject_X1_list = []
@@ -105,25 +105,17 @@ class MultiInputConvNetwork:
         print('X1 Input Shape: ', self.X1_train.shape[1:])
         print('X2 Input Shape: ', self.X2_train.shape[1:])
 
-        # branch1 = keras.Sequential()
-        # branch1.add(keras.layers.Conv2D(input_shape=self.X1_train.shape[1:], filters=16, kernel_size=5,
-        #                                 strides=1, padding='same', activation='relu', name='Conv1')(state_input))
-        # branch1.add(keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'))
-        # branch1.add(keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2'))
-        # branch1.add(keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'))
-        # branch1.add(keras.layers.Flatten())
-        # x1 = branch1(state_input)
-
         situation_size = self.X1_train.shape[1]
         state_input = tf.keras.Input((situation_size, situation_size, 1))
-        position_input = tf.keras.Input((2, ))
+        position_input = tf.keras.Input((2,))
 
-        x1 = tf.keras.layers.Conv2D(input_shape=state_input.get_shape(), filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='Conv1')(state_input),
+        x1 = tf.keras.layers.Conv2D(input_shape=state_input.get_shape(), filters=16, kernel_size=5, strides=1, padding='same',
+                                    activation='relu', name='Conv1')(state_input)
         print('First Layer output:', x1)
-        # x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
-        # x1 = keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1),
-        # x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
-        x1 = tf.keras.layers.Flatten()(x1),
+        x1 = tf.keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1)
+        x1 = tf.keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1)
+        x1 = tf.keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1)
+        x1 = tf.keras.layers.Flatten()(x1)
 
         print('got to end of cnn layer')
         normalization_layer = tf.keras.layers.Normalization(axis=1)
@@ -131,12 +123,12 @@ class MultiInputConvNetwork:
         normalized_pos_input = normalization_layer(position_input)
         x = tf.keras.layers.Concatenate()([x1, normalized_pos_input])
         print('after concatenation:\n', x)
-        x = tf.keras.layers.Dense(64, name='Dense1', activation='relu')(x),
-        x = tf.keras.layers.Dense(16, name='Dense2', activation='relu')(x),
+        x = tf.keras.layers.Dense(128, name='Dense1', activation='relu')(x)
+        x = tf.keras.layers.Dense(32, name='Dense2', activation='relu')(x)
         output = tf.keras.layers.Dense(1, name='Output')(x)
 
         print('got to end of dense layer')
-        self.model = tf.Model(inputs=[state_input, position_input], outputs=output)
+        self.model = tf.keras.Model(inputs=[state_input, position_input], outputs=output)
         print(f'Created model for {self.name}:')
         print(self.model.summary())
 
@@ -205,3 +197,19 @@ class MultiInputConvNetwork:
         # plt.savefig(self.SAVE_DIR + 'plots/' + self.name + '_rmse.png')
         plt.savefig(self.name + '_rmse.png')
         plt.show()
+
+
+nn_configuration = {
+    'epochs': 100,  # number of epochs
+    'batch_size': 32,  # size of the batch
+    'verbose': 1,  # set the training phase as verbose
+    'optimizer': tf.keras.optimizers.Adam(clipvalue=1.0),  # optimizer
+    'metrics': ["root_mean_squared_error"],
+    'loss': 'mean_squared_error',  # loss
+    'val_split': 0.2,  # validation split: percentage of the training data used for evaluating the loss function
+    'input_shape': (15, 20, 1),
+    'n_output': 1  # number of outputs = x and y
+}
+
+multi_input_conv_nn = MultiInputConvNetwork(name='multi_input_conv_nn', configuration=nn_configuration)
+multi_input_conv_nn.create_model()
