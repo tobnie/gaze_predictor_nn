@@ -141,7 +141,7 @@ class MultiInputConvNetwork:
         self.model.compile(optimizer=self.config['optimizer'],
                            loss=self.config['loss'],
                            metrics=[tf.keras.metrics.RootMeanSquaredError()])
-        self.history = self.model.fit([self.X1_train, self.X2_train], batch_size=self.config['batch_size'], epochs=self.config['epochs'],
+        self.history = self.model.fit([self.X1_train, self.X2_train], self.y_train, batch_size=self.config['batch_size'], epochs=self.config['epochs'],
                                       verbose=self.config['verbose'],
                                       validation_split=self.config['val_split'])
         # self.history = self.model.fit(self._input_fn(train=True), batch_size=self.config['batch_size'], epochs=self.config['epochs'],
