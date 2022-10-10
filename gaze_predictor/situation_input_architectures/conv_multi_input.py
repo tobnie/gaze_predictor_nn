@@ -116,8 +116,9 @@ class MultiInputConvNetwork:
         # branch1.add(keras.layers.Flatten())
         # x1 = branch1(state_input)
 
-        state_input = keras.Input(shape=self.X1_train.shape[1:])
-        position_input = keras.Input(shape=self.X2_train.shape[1:])
+        situation_size = self.X1_train.shape[1]
+        state_input = keras.Input(shape=(situation_size, situation_size, 1), name='situation')
+        position_input = keras.Input(shape=(2, ), name='player_pos')
 
         x1 = keras.layers.Conv2D(filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='Conv1')(state_input),
         print('First Layer output:', x1)
@@ -131,7 +132,7 @@ class MultiInputConvNetwork:
         x = keras.layers.Dense(16, name='Dense2', activation='relu')(x),
         output = keras.layers.Dense(self.config['n_output'], name='Output')(x)
 
-        self.model = Model(inputs=[state_input, position_input], outputs=[output])
+        self.model = Model(inputs=[state_input, position_input], outputs=output)
         print(f'Created model for {self.name}:')
         print(self.model.summary())
 

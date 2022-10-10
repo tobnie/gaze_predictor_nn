@@ -85,6 +85,7 @@ class RecurrentNetwork(BaseRecurrentNetwork):
         self.model = keras.Sequential([
             keras.layers.LSTM(64, input_shape=(self.X_train.shape[-2], self.X_train.shape[-1]), name='input',
                               kernel_initializer=xavier_initializer),
+            # TODO Maybe add additional LSTM layer
             keras.layers.Dense(128, name='Dense1', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dense(16, name='Dense2', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dense(self.config['n_output'], name='output', kernel_initializer=xavier_initializer)
