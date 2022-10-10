@@ -17,7 +17,7 @@ nn_configuration = {
 }
 
 
-class RecurrentNetwork(NeuralNetwork):
+class RecurrentConvNetwork(NeuralNetwork):
 
     def __init__(self, name, percent_train=0.8, configuration=None, subject_specific=False):
         input_file = 'single_layer_fm_seq.npz'
