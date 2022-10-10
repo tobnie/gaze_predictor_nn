@@ -33,7 +33,8 @@ class MultiInputConvNetwork:
         self._load_data(input_file, output_file, flatten=False, subject_specific=subject_specific)
 
     def _load_subject_data_and_concat(self, input_file, output_file, subject_specific):
-        data_dir = '../data/'
+        data_dir = os.getcwd() + DATA_PATH
+        # data_dir = '../data/'
         subject_dirs = [f for f in os.listdir(data_dir)]
 
         subject_X1_list = []
