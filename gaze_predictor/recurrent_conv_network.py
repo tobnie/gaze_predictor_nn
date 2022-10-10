@@ -48,7 +48,8 @@ class RecurrentConvNetwork(BaseRecurrentNetwork):
             keras.layers.Conv2D(filters=16, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv'),
             keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'),
             keras.layers.Flatten(),
-            keras.layers.Dense(32, name='Dense', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(64, name='Dense1', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(32, name='Dense2', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dense(self.config['n_output'], name='output', kernel_initializer=xavier_initializer)
         ])
 
