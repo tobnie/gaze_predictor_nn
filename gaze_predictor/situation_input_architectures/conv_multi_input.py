@@ -110,11 +110,11 @@ class MultiInputConvNetwork:
         state_input = tf.keras.Input((situation_size, situation_size, 1))
         position_input = tf.keras.Input((2,))
 
-        x1 = tf.keras.layers.Conv2D(input_shape=state_input.get_shape(), filters=16, kernel_size=5, strides=1, padding='same',
+        x1 = tf.keras.layers.Conv2D(input_shape=state_input.get_shape(), filters=64, kernel_size=5, strides=1, padding='same',
                                     activation='relu', name='Conv1')(state_input)
         print('First Layer output:', x1)
         x1 = tf.keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1)
-        x1 = tf.keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1)
+        x1 = tf.keras.layers.Conv2D(filters=128, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1)
         x1 = tf.keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1)
         x1 = tf.keras.layers.Flatten()(x1)
 

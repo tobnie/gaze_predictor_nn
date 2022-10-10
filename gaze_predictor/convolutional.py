@@ -26,10 +26,10 @@ class ConvNetwork(NeuralNetwork):
 
     def create_model(self):
         self.model = keras.Sequential([
-            keras.layers.Conv2D(input_shape=self.config['input_shape'], filters=16, kernel_size=5,
+            keras.layers.Conv2D(input_shape=self.config['input_shape'], filters=64, kernel_size=5,
                                 strides=1, padding='same', activation='relu', name='Conv1'),
             keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'),
-            keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2'),
+            keras.layers.Conv2D(filters=128, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2'),
             keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'),
             keras.layers.Flatten(),
             keras.layers.Dense(64, name='Dense1', activation='relu'),
