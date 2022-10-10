@@ -49,7 +49,7 @@ class MultiInputConvNetwork:
             # print(f'Loading from {input_path}...')
             subject_X1 = np.load(input_path)['arr_0']
             subject_X2 = np.load(player_pos_path)['arr_0']
-            subject_X1 = subject_X1.reshape((subject_X2.shape[0], subject_X2.shape[1], subject_X2[2], 1))
+            subject_X1 = subject_X1.reshape((subject_X2.shape[0], subject_X2.shape[1], subject_X2.shape[2], 1))
             subject_X2 = subject_X2.reshape((subject_X2.shape[0], 2))
 
             # print(f'Loading from {output_path}...')
