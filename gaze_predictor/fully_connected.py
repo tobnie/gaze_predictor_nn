@@ -50,6 +50,7 @@ class FCNetworkPlayerPosInput(NeuralNetwork):
     def __init__(self, name, percent_train=0.8, configuration=None, subject_specific=False):
         input_file = 'player_pos.npz'
         output_file = 'mfd.npz'
+        # TODO normalize player position?
 
         super().__init__(name, percent_train, configuration)
 
@@ -98,7 +99,6 @@ class FCNetworkSituationInput(NeuralNetwork):
             subject_player_pos = subject_player_pos.reshape((subject_player_pos.shape[0], 2))
             subject_situation = subject_situation.reshape((subject_situation.shape[0], -1))
             subject_X = np.concatenate((subject_situation, subject_player_pos), axis=1)
-
 
             # print(f'Loading from {output_path}...')
             subject_y = np.load(output_path)['arr_0']

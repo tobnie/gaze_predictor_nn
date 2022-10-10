@@ -117,18 +117,22 @@ class MultiInputConvNetwork:
         # x1 = branch1(state_input)
 
         situation_size = self.X1_train.shape[1]
-        state_input = keras.Input(shape=(situation_size, situation_size, 1), name='situation')
-        position_input = keras.Input(shape=(2, ), name='player_pos')
+        state_input = keras.Input((situation_size, situation_size, 1))
+        position_input = keras.Input((2, ))
 
-        x1 = keras.layers.Conv2D(filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='Conv1')(state_input),
+        x1 = keras.layers.Conv2D(input_shape=state_input.get_shape(), filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='Conv1')(state_input),
         print('First Layer output:', x1)
         # x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
-        x1 = keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1),
-        x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
-        x1 = keras.layers.Flatten()(x1),
+        # x1 = keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1),
+        # x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
+        # x1 = keras.layers.Flatten()(x1),
 
         print('got to end of cnn layer')
-        x = keras.layers.concatenate()([x1, position_input])
+        normalization_layer = keras.layers.Normalization(axis=1)
+        normalization_layer.adapt(self.X2)
+        normalized_pos_input = normalization_layer(position_input)
+        x = keras.layers.concatenate()([x1, normalized_pos_input])
+        print('after concatenation:\n', x)
         x = keras.layers.Dense(64, name='Dense1', activation='relu')(x),
         x = keras.layers.Dense(16, name='Dense2', activation='relu')(x),
         output = keras.layers.Dense(1, name='Output')(x)
