@@ -119,7 +119,7 @@ class MultiInputConvNetwork:
         x = keras.layers.Dense(16, name='Dense2', activation='relu')(x),
         output = keras.layers.Dense(self.config['n_output'], name='Output')(x)
 
-        self.model = Model(inputs=[state_input, region_input], outputs=output)
+        self.model = Model(inputs=[state_input, region_input], outputs=[output])
         print(f'Created model for {self.name}:')
         print(self.model.summary())
 
