@@ -109,7 +109,7 @@ class MultiInputConvNetwork:
         state_input = keras.layers.Input(shape=self.X1_train.shape[1:])
         region_input = keras.layers.Input(shape=self.X2_train.shape[1:])
 
-        x1 = keras.layers.Conv2D(input_shape=self.config['input_shape'], filters=16, kernel_size=5,
+        x1 = keras.layers.Conv2D(input_shape=self.X1_train.shape[1:], filters=16, kernel_size=5,
                                  strides=1, padding='same', activation='relu', name='Conv1')(state_input),
         print('First Layer output:', x1)
         x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
