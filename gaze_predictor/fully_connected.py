@@ -95,7 +95,7 @@ class FCNetworkSituationInput(NeuralNetwork):
             # print(f'Loading from {input_path}...')
             subject_situation = np.load(input_path)['arr_0']
             subject_region = np.load(regions_path)['arr_0']
-            subject_region = subject_region.reshape((subject_region.shape[0], 1, 1))
+            subject_region = subject_region.reshape((subject_region.shape[0], 1))
             subject_situation = subject_situation.reshape((subject_situation.shape[0], -1))
 
             print('Situation data shape:', subject_situation.shape)
