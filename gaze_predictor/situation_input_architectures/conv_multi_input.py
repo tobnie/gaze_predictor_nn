@@ -198,19 +198,3 @@ class MultiInputConvNetwork:
         # plt.savefig(self.SAVE_DIR + 'plots/' + self.name + '_rmse.png')
         plt.savefig(self.name + '_rmse.png')
         plt.show()
-
-
-nn_configuration = {
-    'epochs': 100,  # number of epochs
-    'batch_size': 32,  # size of the batch
-    'verbose': 1,  # set the training phase as verbose
-    'optimizer': tf.keras.optimizers.Adam(clipvalue=1.0),  # optimizer
-    'metrics': ["root_mean_squared_error"],
-    'loss': 'mean_squared_error',  # loss
-    'val_split': 0.2,  # validation split: percentage of the training data used for evaluating the loss function
-    'input_shape': (15, 20, 1),
-    'n_output': 1  # number of outputs = x and y
-}
-
-multi_input_conv_nn = MultiInputConvNetwork(name='multi_input_conv_nn', configuration=nn_configuration)
-multi_input_conv_nn.create_model()
