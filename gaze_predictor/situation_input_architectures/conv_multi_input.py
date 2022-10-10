@@ -106,8 +106,8 @@ class MultiInputConvNetwork:
     def create_model(self):
         print('X1 Input Shape: ', self.X1_train.shape[1:])
         print('X2 Input Shape: ', self.X2_train.shape[1:])
-        state_input = keras.layers.InputLayer(shape=self.X1_train.shape[1:])
-        region_input = keras.layers.InputLayer(shape=self.X2_train.shape[1:])
+        state_input = keras.layers.InputLayer(input_shape=self.X1_train.shape[1:])
+        region_input = keras.layers.InputLayer(input_shape=self.X2_train.shape[1:])
 
         # branch1 = keras.Sequential()
         # branch1.add(keras.layers.Conv2D(input_shape=self.X1_train.shape[1:], filters=16, kernel_size=5,
