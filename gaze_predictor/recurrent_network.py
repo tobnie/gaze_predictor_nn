@@ -28,12 +28,13 @@ class RecurrentNetwork(NeuralNetwork):
         input_file = 'single_layer_fm_seq.npz'
         output_file = 'mfd_seq.npz'
 
+        super().__init__(name, percent_train, configuration)
+
         # lstm specific parameters
         self.timesteps = timesteps
         self.stride = stride
         self.name += f'_timesteps={timesteps}_stride={stride}'
 
-        super().__init__(name, percent_train, configuration)
         self._load_data(input_file, output_file, flatten=True, subject_specific=subject_specific)
 
         # flatten data
