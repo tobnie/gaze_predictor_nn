@@ -104,8 +104,8 @@ class MultiInputConvNetwork:
         self.y_test = self.y[-int(len(self.y) * self.percent_test):]
 
     def create_model(self):
-        state_input = keras.layers.Input(shape=self.X1_train.shape[1:])
-        region_input = keras.layers.Input(shape=(self.X2_train.shape[-1],))
+        state_input = keras.layers.Input(shape=self.X1_train.shape[1:-1])
+        region_input = keras.layers.Input(shape=(self.X2_train.shape[1:],))
 
         x1 = keras.layers.Conv2D(input_shape=self.config['input_shape'], filters=16, kernel_size=5,
                                  strides=1, padding='same', activation='relu', name='Conv1')(state_input),
