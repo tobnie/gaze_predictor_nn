@@ -43,8 +43,8 @@ class NeuralNetwork:
             # print(f'Loading from {output_path}...')
             subject_y = np.load(output_path)['arr_0']
 
-            # if only for one subject, immediately return first found subject data
-            if subject_specific:
+            # if only for one subject, data for best subject JO03SA
+            if subject_specific and subject_dir == 'JO03SA':
                 return subject_X, subject_y
 
             subject_X_list.append(subject_X)
