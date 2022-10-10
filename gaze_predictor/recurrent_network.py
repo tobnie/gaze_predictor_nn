@@ -28,6 +28,10 @@ class RecurrentNetwork(NeuralNetwork):
         input_file = 'single_layer_fm_seq.npz'
         output_file = 'mfd_seq.npz'
 
+        # lstm specific parameters
+        self.timesteps = timesteps
+        self.stride = stride
+
         super().__init__(name, percent_train, configuration)
         self._load_data(input_file, output_file, flatten=True, subject_specific=subject_specific)
 
@@ -39,10 +43,6 @@ class RecurrentNetwork(NeuralNetwork):
         self.X_test = self.X_test.reshape((self.X_test.shape[0], time_steps, -1))
         print('X_train shape:', self.X_train.shape)
         print('X_test shape:', self.X_test.shape)
-
-        # lstm specific parameters
-        self.timesteps = timesteps
-        self.stride = stride
 
     def create_model(self):
         xavier_initializer = keras.initializers.GlorotUniform()
