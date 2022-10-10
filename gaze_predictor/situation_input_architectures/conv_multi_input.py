@@ -47,10 +47,10 @@ class MultiInputConvNetwork:
             output_path = data_dir + subject_dir + '/' + output_file
 
             # print(f'Loading from {input_path}...')
-            subject_situation = np.load(input_path)['arr_0']
-            subject_player_pos = np.load(player_pos_path)['arr_0']
-            subject_X1 = subject_situation.reshape((subject_situation.shape[0], -1))
-            subject_X2 = subject_player_pos.reshape((subject_player_pos.shape[0], 2))
+            subject_X1 = np.load(input_path)['arr_0']
+            subject_X2 = np.load(player_pos_path)['arr_0']
+            # subject_X1 = subject_situation.reshape((subject_situation.shape[0], -1))
+            # subject_X2 = subject_player_pos.reshape((subject_player_pos.shape[0], 2))
 
             # print(f'Loading from {output_path}...')
             subject_y = np.load(output_path)['arr_0']
@@ -65,6 +65,8 @@ class MultiInputConvNetwork:
 
         X1 = np.concatenate(subject_X1_list)
         X2 = np.concatenate(subject_X2_list)
+        print(f'X1 shape: {X1.shape}')
+        print(f'X2 shape: {X2.shape}')
         y = np.concatenate(subject_y_list)
 
         return X1, X2, y
