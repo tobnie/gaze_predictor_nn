@@ -125,7 +125,7 @@ class MultiInputConvNetwork:
         # x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
         # x1 = keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1),
         # x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
-        # x1 = keras.layers.Flatten()(x1),
+        x1 = keras.layers.Flatten()(x1),
 
         print('got to end of cnn layer')
         normalization_layer = keras.layers.Normalization(axis=1)
