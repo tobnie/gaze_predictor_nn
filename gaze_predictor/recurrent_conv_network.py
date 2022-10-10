@@ -1,6 +1,7 @@
 from tensorflow import keras
 
 from gaze_predictor.base_network import NeuralNetwork
+from gaze_predictor.recurrent_network import BaseRecurrentNetwork
 
 nn_configuration = {
     'epochs': 20,  # number of epochs
@@ -17,18 +18,13 @@ nn_configuration = {
 }
 
 
-class RecurrentConvNetwork(NeuralNetwork):
+class RecurrentConvNetwork(BaseRecurrentNetwork):
 
     def __init__(self, name, percent_train=0.8, configuration=None, subject_specific=False, timesteps=100, stride=20):
         input_file = 'single_layer_fm_seq.npz'
         output_file = 'mfd_seq.npz'
 
-        super().__init__(name, percent_train, configuration)
-
-        # lstm specific parameters
-        self.timesteps = timesteps
-        self.stride = stride
-        self.name += f'_timesteps={timesteps}_stride={stride}'
+        super().__init__(name, percent_train, configuration, timesteps=timesteps, stride=stride)
 
         self._load_data(input_file, output_file, flatten=True, subject_specific=subject_specific)
 
@@ -45,7 +41,8 @@ class RecurrentConvNetwork(NeuralNetwork):
     def create_model(self):
         xavier_initializer = keras.initializers.GlorotUniform()
         self.model = keras.Sequential([
-            keras.layers.ConvLSTM2D(filters=32, kernel_size=5, strides=1, padding='same', input_shape=(self.X.shape[1], self.config['n_input']), name='LSTMConv',
+            keras.layers.ConvLSTM2D(filters=32, kernel_size=5, strides=1, padding='same',
+                                    input_shape=(self.X.shape[1], self.config['n_input']), name='LSTMConv',
                                     kernel_initializer=xavier_initializer),
             keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'),
             keras.layers.Conv2D(filters=16, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv'),
@@ -62,7 +59,6 @@ class RecurrentConvNetwork(NeuralNetwork):
             keras.layers.Dense(16, name='Dense2', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dense(self.config['n_output'], name='output', kernel_initializer=xavier_initializer)
         ])
-
 
         print(f'Created model for {self.name}:')
         print(self.model.summary())

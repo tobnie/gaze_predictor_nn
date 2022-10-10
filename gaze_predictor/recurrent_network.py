@@ -22,11 +22,9 @@ nn_configuration = {
 DATA_PATH = '/gaze_predictor/data/'
 
 
-class RecurrentNetwork(NeuralNetwork):
+class BaseRecurrentNetwork(NeuralNetwork):
 
-    def __init__(self, name, percent_train=0.8, configuration=None, subject_specific=False, timesteps=100, stride=20):
-        input_file = 'single_layer_fm_seq.npz'
-        output_file = 'mfd_seq.npz'
+    def __init__(self, name, percent_train=0.8, configuration=None, timesteps=100, stride=20):
 
         super().__init__(name, percent_train, configuration)
 
@@ -34,29 +32,6 @@ class RecurrentNetwork(NeuralNetwork):
         self.timesteps = timesteps
         self.stride = stride
         self.name += f'_timesteps={timesteps}_stride={stride}'
-
-        self._load_data(input_file, output_file, flatten=True, subject_specific=subject_specific)
-
-        # flatten data
-        print('Train Data before:', self.X_train.shape)
-        print('Test Data before:', self.X_test.shape)
-        self.X_train = self.X_train.reshape((self.X_train.shape[0], self.timesteps, -1))
-        self.X_test = self.X_test.reshape((self.X_test.shape[0], self.timesteps, -1))
-        print('X_train after reshape:', self.X_train.shape)
-        print('X_test after reshape:', self.X_test.shape)
-
-    def create_model(self):
-        xavier_initializer = keras.initializers.GlorotUniform()
-        self.model = keras.Sequential([
-            keras.layers.LSTM(64, input_shape=(self.X_train.shape[-2], self.X_train.shape[-1]), name='input',
-                              kernel_initializer=xavier_initializer),
-            keras.layers.Dense(128, name='Dense1', activation='relu', kernel_initializer=xavier_initializer),
-            keras.layers.Dense(16, name='Dense2', activation='relu', kernel_initializer=xavier_initializer),
-            keras.layers.Dense(self.config['n_output'], name='output', kernel_initializer=xavier_initializer)
-        ])
-
-        print(f'Created model for {self.name}:')
-        print(self.model.summary())
 
     def _load_subject_data_and_concat(self, input_file, output_file, subject_specific):
         data_dir = os.getcwd() + DATA_PATH
@@ -85,3 +60,35 @@ class RecurrentNetwork(NeuralNetwork):
         y = np.concatenate(subject_y_list)
 
         return X, y
+
+
+class RecurrentNetwork(BaseRecurrentNetwork):
+
+    def __init__(self, name, percent_train=0.8, configuration=None, subject_specific=False, timesteps=100, stride=20):
+        input_file = 'single_layer_fm_seq.npz'
+        output_file = 'mfd_seq.npz'
+
+        super().__init__(name, percent_train, configuration, timesteps=timesteps, stride=stride)
+
+        self._load_data(input_file, output_file, flatten=True, subject_specific=subject_specific)
+
+        # flatten data
+        print('Train Data before:', self.X_train.shape)
+        print('Test Data before:', self.X_test.shape)
+        self.X_train = self.X_train.reshape((self.X_train.shape[0], self.timesteps, -1))
+        self.X_test = self.X_test.reshape((self.X_test.shape[0], self.timesteps, -1))
+        print('X_train after reshape:', self.X_train.shape)
+        print('X_test after reshape:', self.X_test.shape)
+
+    def create_model(self):
+        xavier_initializer = keras.initializers.GlorotUniform()
+        self.model = keras.Sequential([
+            keras.layers.LSTM(64, input_shape=(self.X_train.shape[-2], self.X_train.shape[-1]), name='input',
+                              kernel_initializer=xavier_initializer),
+            keras.layers.Dense(128, name='Dense1', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(16, name='Dense2', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(self.config['n_output'], name='output', kernel_initializer=xavier_initializer)
+        ])
+
+        print(f'Created model for {self.name}:')
+        print(self.model.summary())
