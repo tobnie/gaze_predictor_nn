@@ -127,11 +127,13 @@ class MultiInputConvNetwork:
         x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
         x1 = keras.layers.Flatten()(x1),
 
+        print('got to end of cnn layer')
         x = keras.layers.concatenate()([x1, position_input])
         x = keras.layers.Dense(64, name='Dense1', activation='relu')(x),
         x = keras.layers.Dense(16, name='Dense2', activation='relu')(x),
         output = keras.layers.Dense(1, name='Output')(x)
 
+        print('got to end of dense layer')
         self.model = Model(inputs=[state_input, position_input], outputs=output)
         print(f'Created model for {self.name}:')
         print(self.model.summary())
