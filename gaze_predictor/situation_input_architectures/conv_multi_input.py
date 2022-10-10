@@ -48,7 +48,7 @@ class MultiInputConvNetwork:
             # print(f'Loading from {input_path}...')
             subject_situation = np.load(input_path)['arr_0']
             subject_player_pos = np.load(player_pos_path)['arr_0']
-            subject_player_pos = subject_player_pos.reshape((subject_player_pos.shape[0], 1))
+            subject_player_pos = subject_player_pos.reshape((subject_player_pos.shape[0], 2))
             subject_situation = subject_situation.reshape((subject_situation.shape[0], -1))
 
             print('Situation data shape:', subject_situation.shape)
@@ -86,7 +86,7 @@ class MultiInputConvNetwork:
         generator = generator_train if train else generator_test
 
         dataset = tf.data.Dataset.from_generator(generator, output_types=({"input_1": tf.int64, "input_2": tf.int64}, tf.float64))
-        dataset = dataset.batch(2)
+        # dataset = dataset.batch(2)
         return dataset
 
     def _load_data(self, input_file, output_file, flatten=False, subject_specific=False):

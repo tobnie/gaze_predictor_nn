@@ -95,13 +95,10 @@ class FCNetworkSituationInput(NeuralNetwork):
             # print(f'Loading from {input_path}...')
             subject_situation = np.load(input_path)['arr_0']
             subject_player_pos = np.load(player_pos_path)['arr_0']
-            subject_player_pos = subject_player_pos.reshape((subject_player_pos.shape[0], 1))
+            subject_player_pos = subject_player_pos.reshape((subject_player_pos.shape[0], 2))
             subject_situation = subject_situation.reshape((subject_situation.shape[0], -1))
-
-            print('Situation data shape:', subject_situation.shape)
-            print('player pos data shape:', subject_player_pos.shape)
             subject_X = np.concatenate((subject_situation, subject_player_pos), axis=1)
-            print('concatenated data shape:', subject_X.shape)
+
 
             # print(f'Loading from {output_path}...')
             subject_y = np.load(output_path)['arr_0']
