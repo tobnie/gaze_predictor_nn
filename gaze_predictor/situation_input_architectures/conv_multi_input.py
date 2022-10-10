@@ -131,7 +131,7 @@ class MultiInputConvNetwork:
         normalization_layer = keras.layers.Normalization(axis=1)
         normalization_layer.adapt(self.X2)
         normalized_pos_input = normalization_layer(position_input)
-        x = keras.layers.concatenate()([x1, normalized_pos_input])
+        x = keras.layers.Concatenate()([x1, normalized_pos_input])
         print('after concatenation:\n', x)
         x = keras.layers.Dense(64, name='Dense1', activation='relu')(x),
         x = keras.layers.Dense(16, name='Dense2', activation='relu')(x),
