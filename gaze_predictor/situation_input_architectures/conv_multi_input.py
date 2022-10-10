@@ -1,11 +1,9 @@
 import os
 import pickle
 
-import numpy as np
-from keras import Model
 import tensorflow as tf
+import numpy as np
 from matplotlib import pyplot as plt
-from tensorflow import keras
 from sklearn.utils import shuffle
 
 from gaze_predictor.base_network import DATA_PATH
@@ -117,28 +115,28 @@ class MultiInputConvNetwork:
         # x1 = branch1(state_input)
 
         situation_size = self.X1_train.shape[1]
-        state_input = keras.Input((situation_size, situation_size, 1))
-        position_input = keras.Input((2, ))
+        state_input = tf.keras.Input((situation_size, situation_size, 1))
+        position_input = tf.keras.Input((2, ))
 
-        x1 = keras.layers.Conv2D(input_shape=state_input.get_shape(), filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='Conv1')(state_input),
+        x1 = tf.keras.layers.Conv2D(input_shape=state_input.get_shape(), filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='Conv1')(state_input),
         print('First Layer output:', x1)
         # x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
         # x1 = keras.layers.Conv2D(filters=32, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv2')(x1),
         # x1 = keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same')(x1),
-        x1 = keras.layers.Flatten()(x1),
+        x1 = tf.keras.layers.Flatten()(x1),
 
         print('got to end of cnn layer')
-        normalization_layer = keras.layers.Normalization(axis=1)
+        normalization_layer = tf.keras.layers.Normalization(axis=1)
         normalization_layer.adapt(self.X2)
         normalized_pos_input = normalization_layer(position_input)
-        x = keras.layers.Concatenate()([x1, normalized_pos_input])
+        x = tf.keras.layers.Concatenate()([x1, normalized_pos_input])
         print('after concatenation:\n', x)
-        x = keras.layers.Dense(64, name='Dense1', activation='relu')(x),
-        x = keras.layers.Dense(16, name='Dense2', activation='relu')(x),
-        output = keras.layers.Dense(1, name='Output')(x)
+        x = tf.keras.layers.Dense(64, name='Dense1', activation='relu')(x),
+        x = tf.keras.layers.Dense(16, name='Dense2', activation='relu')(x),
+        output = tf.keras.layers.Dense(1, name='Output')(x)
 
         print('got to end of dense layer')
-        self.model = Model(inputs=[state_input, position_input], outputs=output)
+        self.model = tf.Model(inputs=[state_input, position_input], outputs=output)
         print(f'Created model for {self.name}:')
         print(self.model.summary())
 
@@ -149,7 +147,7 @@ class MultiInputConvNetwork:
         # compile and fit model
         self.model.compile(optimizer=self.config['optimizer'],
                            loss=self.config['loss'],
-                           metrics=[keras.metrics.RootMeanSquaredError()])
+                           metrics=[tf.keras.metrics.RootMeanSquaredError()])
         self.history = self.model.fit([self.X1_train, self.X2_train], batch_size=self.config['batch_size'], epochs=self.config['epochs'],
                                       verbose=self.config['verbose'],
                                       validation_split=self.config['val_split'])
@@ -175,7 +173,7 @@ class MultiInputConvNetwork:
         return self.model.predict(X)
 
     def load_model(self, path):
-        self.model = keras.models.load_model(
+        self.model = tf.keras.models.load_model(
             path, custom_objects=None, compile=True, options=None
         )
         self.history = pickle.load(self.save_path_history)
