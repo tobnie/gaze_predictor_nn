@@ -64,9 +64,9 @@ class FCNetworkHighCapacity(NeuralNetwork):
                                kernel_initializer=xavier_initializer),
             keras.layers.Dense(1024, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dense(256, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
-            keras.layers.Dense(32, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
-            keras.layers.Dense(32, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
-            keras.layers.Dense(16, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(32, name='Hidden3', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(32, name='Hidden4', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(16, name='Hidden5', activation='relu', kernel_initializer=xavier_initializer),
             keras.layers.Dense(self.config['n_output'], name='Output', kernel_initializer=xavier_initializer)
         ])
 
