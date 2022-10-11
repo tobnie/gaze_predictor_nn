@@ -39,11 +39,11 @@ class RecurrentConvNetwork(BaseRecurrentNetwork):
     def create_model(self):
         xavier_initializer = keras.initializers.GlorotUniform()
         self.model = keras.Sequential([
-            keras.layers.ConvLSTM2D(filters=64, kernel_size=5, strides=1, padding='same',
+            keras.layers.ConvLSTM2D(filters=16, kernel_size=5, strides=1, padding='same',
                                     input_shape=self.X_train.shape[1:], name='LSTMConv',
                                     kernel_initializer=xavier_initializer),  # activation is tanh by default
             keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'),
-            keras.layers.Conv2D(filters=128, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv'),
+            keras.layers.Conv2D(filters=64, kernel_size=3, strides=1, padding='same', activation='relu', name='Conv'),
             keras.layers.MaxPooling2D(pool_size=2, strides=None, padding='same'),
             keras.layers.Flatten(),
             keras.layers.Dense(64, name='Dense1', activation='relu', kernel_initializer=xavier_initializer),
