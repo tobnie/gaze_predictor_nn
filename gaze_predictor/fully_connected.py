@@ -45,6 +45,36 @@ class FCNetwork(NeuralNetwork):
         print(self.model.summary())
 
 
+class FCNetworkHighCapacity(NeuralNetwork):
+
+    def __init__(self, name, percent_train=0.8, configuration=None, subject_specific=False):
+        input_file = 'single_layer_fm.npz'
+        output_file = 'mfd.npz'
+
+        super().__init__(name, percent_train, configuration)
+
+        self._load_data(input_file, output_file, flatten=True, subject_specific=subject_specific)
+
+    def create_model(self):
+        print('X shape:', self.X.shape)
+
+        xavier_initializer = keras.initializers.GlorotUniform()
+        self.model = keras.Sequential([
+            keras.layers.Dense(self.config['n_input'], input_shape=self.config['input_shape'], name='Input',
+                               kernel_initializer=xavier_initializer),
+            keras.layers.Dense(1024, name='Hidden1', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(256, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(32, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(32, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(16, name='Hidden2', activation='relu', kernel_initializer=xavier_initializer),
+            keras.layers.Dense(self.config['n_output'], name='Output', kernel_initializer=xavier_initializer)
+        ])
+
+        print(f'Created model for {self.name}:')
+        print(self.model.summary())
+
+
+
 class FCNetworkPlayerPosInput(NeuralNetwork):
 
     def __init__(self, name, percent_train=0.8, configuration=None, subject_specific=False):
